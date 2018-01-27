@@ -1,0 +1,26 @@
+<h2>Angular</h2>
+
+<form [formGroup]="form" (ngSubmit)="addItem()">
+  <div class="form-group" [formGroup]="form">
+    <ip-text formControlName="id" ngDefaultControl></ip-text>
+    <ip-text formControlName="name"></ip-text>
+    <ip-select formControlName="state" [values]="states"></ip-select>
+
+    <input type="submit" [disabled]="form.invalid">
+  </div>
+</form>
+
+<pre>
+  {{form.value | json}}
+</pre>
+
+<ul class="heroes">
+  <li *ngFor="let item of items | async">
+    <!-- <a routerLink="/detail/{{item.id}}"> -->
+    <a routerLink="/item/{{item.id}}">
+      <span class="badge">{{item.id}}</span> {{item.name}}
+    </a>
+    <!-- </a> -->
+    <button class="delete" title="delete item" (click)="delete(item)">x</button>
+  </li>
+</ul>
