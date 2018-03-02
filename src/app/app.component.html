@@ -1,4 +1,11 @@
-<ul>
+<h1>{{title}}</h1>
+<nav>
+  <!-- <a routerLink="/dashboard">Dashboard</a> -->
+  <a routerLink="/items">Items</a>
+</nav>
+<router-outlet></router-outlet>
+
+<!-- <ul>
   <li *ngFor="let item of items | async">
     {{ item.name }}
   </li>
@@ -10,4 +17,4 @@
   {{
     (items | async) | json
   }}
-</pre>
+</pre> -->
