@@ -1,5 +1,15 @@
-import {Component, Provider, forwardRef, OnInit, Injector} from "@angular/core";
-import {ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl} from "@angular/forms";
+import {
+  Component,
+  Provider,
+  forwardRef,
+  OnInit,
+  Injector
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  NgControl
+} from '@angular/forms';
 
 // const noop = () => {};
 
@@ -20,22 +30,23 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   `,
   providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR]
 })
-export class IpTextareaComponent implements ControlValueAccessor, OnInit{
-
+export class IpTextareaComponent implements ControlValueAccessor, OnInit {
   private _value: any = '';
   private _ngControl: NgControl;
 
   private _onTouchedCallback: () => void = () => {};
-  private _onChangeCallback: (_:any) => void = () => {};
-  
-  constructor(private inject: Injector) { }  
+  private _onChangeCallback: (_: any) => void = () => {};
+
+  constructor(private inject: Injector) {}
 
   ngOnInit() {
-    this._ngControl = this.inject.get(NgControl)
+    this._ngControl = this.inject.get(NgControl);
   }
 
-  get value(): any { return this._value; };
-  
+  get value(): any {
+    return this._value;
+  }
+
   set value(v: any) {
     if (v !== this._value) {
       this._value = v;
@@ -44,7 +55,7 @@ export class IpTextareaComponent implements ControlValueAccessor, OnInit{
   }
 
   //Set touched on blur
-  onTouched(){
+  onTouched() {
     this._onTouchedCallback();
   }
 
@@ -57,7 +68,6 @@ export class IpTextareaComponent implements ControlValueAccessor, OnInit{
 
   //From ControlValueAccessor interface
   registerOnChange(fn: any) {
-    console.info('registerOnChange', fn);
     this._onChangeCallback = fn;
   }
 
@@ -65,5 +75,4 @@ export class IpTextareaComponent implements ControlValueAccessor, OnInit{
   registerOnTouched(fn: any) {
     this._onTouchedCallback = fn;
   }
-
 }

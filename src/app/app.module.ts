@@ -1,9 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { HttpModule } from '@angular/http';
 import { ReactiveFormsModule, FormsModule, Validators } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { environment } from '../environments/environment';
 
@@ -18,17 +20,25 @@ import { IpTextComponent } from '../core/components/form/ip-text.component';
 import { IpSelectComponent } from '../core/components/form/ip-select.component';
 
 @NgModule({
-  declarations: [AppComponent, ItemsComponent, ItemDetailComponent, IpTextComponent, IpSelectComponent],
+  declarations: [
+    AppComponent,
+    ItemsComponent,
+    ItemDetailComponent,
+    IpTextComponent,
+    IpSelectComponent
+  ],
   imports: [
     BrowserModule,
     FormsModule,
+    HttpModule,
     ReactiveFormsModule,
+    NgbModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule, // imports firebase/firestore, only needed for database features
+    AngularFirestoreModule.enablePersistence(), // imports firebase/firestore, only needed for database features
     AngularFireAuthModule,
     AppRoutingModule // imports firebase/auth, only needed for auth features
   ],
-  providers: [ ItemService ],
+  providers: [ItemService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

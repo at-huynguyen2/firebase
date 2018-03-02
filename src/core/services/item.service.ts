@@ -1,40 +1,50 @@
-
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { AngularFirestore } from 'angularfire2/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+  AngularFirestoreDocument
+} from 'angularfire2/firestore';
+import { Http, Response, Headers } from '@angular/http';
+import { Router, ActivatedRoute, ParamMap, Params } from '@angular/router';
 
+// import { Item } from '../models/item';
 
-import { Item } from '../models/item';
-
-@Injectable() 
+@Injectable()
 export class ItemService {
-  db: AngularFirestore;
+  itemDoc: AngularFirestoreDocument<any>;
   items: Observable<any[]>;
-  constructor(db: AngularFirestore) {
-    this.db = db;
+  item: Observable<any>;
+
+  private itemsCollection: AngularFirestoreCollection<any>;
+
+  constructor(private readonly db: AngularFirestore) {
+    this.itemsCollection = this.db.collection<any>('items');
   }
-  
+
   getAll(): Observable<any[]> {
-    this.items = this.db.collection('items').valueChanges();
+    this.items = this.itemsCollection.snapshotChanges().map(actions => {
+      return actions.map(a => {
+        return {
+          id: a.payload.doc.id,
+          ...a.payload.doc.data()
+        };
+      });
+    });
     return this.items;
   }
-
-  add(id: number, name: string) {
-    //doc??
-    // this.db.collection('items').doc('LA').set({
-    //   id: id,
-    //   name: name
-    // })
-    this.db.collection('items').add({
-      id: id,
-      name: name
-    })
+  get(id: string): Observable<any> {
+    return this.itemsCollection.doc(id).valueChanges();
   }
 
-  put(id: number, name: string) {
-    this.db.collection('items').doc('LA').update({
-      id: id,
-      name: name
-    })
+  add(body: any) {
+    this.db.collection('items').add(body);
+  }
+
+  put(id: string, body: any) {
+    this.db
+      .collection('items')
+      .doc(id)
+      .update(body);
   }
 }
